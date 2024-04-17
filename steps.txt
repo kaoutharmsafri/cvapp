@@ -16,10 +16,12 @@ pip install -r requirements.txt
 
 git remote -v
 
-git remote add new-origin https://github.com/kaoutharmsafri/cvproject2.git
+git remote add origin https://github.com/kaoutharmsafri/cvproject3.git
 
 git push -u new-origin master
 
 git branch
 
 git remote set-url origin <new-remote-url>
+
+git checkout -b  main
