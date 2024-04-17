@@ -64,7 +64,7 @@ def render_as_tuple():
     return data
 
 def render_as_dataframe():
-    query_result = CV.query.limit(20).all()
+    query_result = CV.query.all()
     data = []
     for row in query_result:
         data.append({

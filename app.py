@@ -33,7 +33,9 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'db_cv1'
 mysql = MySQL(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/db_cv1'  
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/db_cv1'  
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://cookie:Kaouthar2001@cookie.database.windows.net/db_cv1?driver=ODBC+Driver+17+for+SQL+Server'
+
 db.init_app(app)
 
 bcrypt = Bcrypt(app) 
@@ -232,7 +234,7 @@ def database():
     form = SearchForm()
     page = request.args.get('page', 1, type=int)
     per_page = 10
-    pagination = CV.query.paginate(page=page, per_page=per_page, error_out=False)
+    pagination = CV.query.order_by(CV.ID).paginate(page=page, per_page=per_page, error_out=False)
     domain_selected_map = {
                         '1': 'ingénieu qualité',
                         '2': 'économie / gestion',
@@ -422,7 +424,7 @@ def database():
         try:
             page = request.args.get('page', 1, type=int)
             per_page = 10
-            pagination = CV.query.paginate(page=page, per_page=per_page, error_out=False)
+            pagination = CV.query.order_by(CV.ID).paginate(page=page, per_page=per_page, error_out=False)
             data = pagination.items
             # data=fetch_all_data()
             sort_by = request.args.get('sort_by', 'ID')

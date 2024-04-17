@@ -18,7 +18,7 @@ git remote -v
 
 git remote add origin https://github.com/kaoutharmsafri/cvproject3.git
 
-git push -u new-origin master
+git push -u origin main
 
 git branch
 
