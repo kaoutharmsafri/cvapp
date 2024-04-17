@@ -1,0 +1,25 @@
+cd  C:\Users\PC\Desktop\master\S9\7-PFE\7-WebApp\Entireprojectdev\CV_project3
+
+pip install virtualenv
+
+virtualenv env
+
+Set-ExecutionPolicy RemoteSigned -Scope Process
+
+.\env\Scripts\Activate
+
+conda create -p venv python==3.8 -y
+
+conda activate venv/
+
+pip install -r requirements.txt
+
+git remote -v
+
+git remote add new-origin https://github.com/kaoutharmsafri/cvproject2.git
+
+git push -u new-origin master
+
+git branch
+
+git remote set-url origin <new-remote-url>
