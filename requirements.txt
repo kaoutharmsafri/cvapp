@@ -20,4 +20,5 @@ Flask-Bcrypt
 flask-paginate
 email_validator
 pyodbc
+gunicorn
 # -e .
