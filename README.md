@@ -1,6 +1,8 @@
 # END to END ML project
 ## App with db from azure and deployed on docker 
 
+change 1 commit 
+
 orange color : #fb4c1c
 grey color : #383535
 black color : #141414
