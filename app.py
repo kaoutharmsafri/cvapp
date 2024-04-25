@@ -63,6 +63,19 @@ def fetch_filtered_data(query):
             'Source': row[12],
             'Url': row[13]
         }
+        pred_df = pd.DataFrame([data_row], columns=['ColonneNiveau', 'ColonneExperience', 'Gender', 'Domain'])
+        pred_df['Domain'] = pred_df['Domain'].replace({'Ingénieur Industriel': 'ingénieur industriel', 'ingénieu qualité': 'ingenieur qualite'})
+        pred_df['Domain'] = pred_df['Domain'].str.replace('é', 'e')
+        predict_pipeline = PredictPipeline()
+        prediction = predict_pipeline.predict(pred_df)[0]
+        data_row['Prediction'] = prediction  
+        # Update the Prediction in the database using SQLAlchemy
+        cv_instance = CV.query.filter_by(ID=row[0]).first()
+        if cv_instance:
+            cv_instance.Prediction = prediction
+            db.session.commit()  
+        else:
+            pass
         data_row['Domain'] = data_row['Domain'].replace('ingénieur', 'Ingénieur').replace('ingénieu qualité', 'Ingénieur Qualité').replace('économie / gestion', 'Economie et Gestion').replace('technicien spécialisé', 'Technicien Spécialisé').replace('ingénieur process', 'Ingénieur Process').replace('ingénieur industriel', 'Ingénieur Industriel').replace('Ingénieur industriel', 'Ingénieur Industriel').replace('chargé de développement', 'Chargé de Développement').replace('concepteur/ dessinateur', 'Concepteur ou Dessinateur').replace('logistique', 'Logistique').replace('ingénieur mécanique', 'Ingénieur Mécanique')
         data.append(data_row)
 
@@ -82,25 +95,24 @@ def fetch_all_data():
             'Niveau': row[6],
             'ColonneNiveau': row[7],
             'Annee_experience_en_conception': row[8],
-            'Prediction': row[9],  # We'll update this later
+            'Prediction': row[9], 
             'ColonneExperience': row[10],
             'Localisation': row[11],
             'Source': row[12],
             'Url': row[13]
         }
         pred_df = pd.DataFrame([data_row], columns=['ColonneNiveau', 'ColonneExperience', 'Gender', 'Domain'])
-        pred_df['Domain'] = pred_df['Domain'].replace({'Ingénieur Industriel': 'ingénieur industriel', 'ingénieu qualité': 'ingenieur qualité'})
+        pred_df['Domain'] = pred_df['Domain'].replace({'Ingénieur Industriel': 'ingénieur industriel', 'ingénieu qualité': 'ingenieur qualite'})
         pred_df['Domain'] = pred_df['Domain'].str.replace('é', 'e')
         predict_pipeline = PredictPipeline()
         prediction = predict_pipeline.predict(pred_df)[0]
-        data_row['Prediction'] = prediction  # Update the Prediction field in data_row
+        data_row['Prediction'] = prediction  
         # Update the Prediction in the database using SQLAlchemy
         cv_instance = CV.query.filter_by(ID=row[0]).first()
         if cv_instance:
             cv_instance.Prediction = prediction
-            db.session.commit()  # Commit the changes to the database
+            db.session.commit()  
         else:
-            # Handle the case where the CV instance with the given ID is not found
             pass
         data_row['Domain'] = data_row['Domain'].replace('ingénieur', 'Ingénieur')\
             .replace('ingénieu qualité', 'Ingénieur Qualité')\
@@ -220,14 +232,53 @@ def register():
 
 def fetch_data_sorted_by_column(column_name, order,page, per_page):
     if column_name == 'Nom':
-        return CV.query.order_by(order(CV.Nom)).paginate(page=page, per_page=per_page, error_out=False)
+        query = CV.query.order_by(order(CV.Nom)).paginate(page=page, per_page=per_page, error_out=False)
     elif column_name == 'ColonneNiveau':
-        return CV.query.order_by(order(CV.ColonneNiveau)).paginate(page=page, per_page=per_page, error_out=False)
+        query = CV.query.order_by(order(CV.ColonneNiveau)).paginate(page=page, per_page=per_page, error_out=False)
     elif column_name == 'ColonneExperience':
-        return CV.query.order_by(order(CV.ColonneExperience)).paginate(page=page, per_page=per_page, error_out=False)
+        query = CV.query.order_by(order(CV.ColonneExperience)).paginate(page=page, per_page=per_page, error_out=False)
     else:
-        return CV.query.order_by(order(CV.ID)).paginate(page=page, per_page=per_page, error_out=False)
-    
+        # return CV.query.order_by(order(CV.ID)).paginate(page=page, per_page=per_page, error_out=False)
+        query = CV.query.order_by(order(CV.ID)).paginate(page=page, per_page=per_page, error_out=False)
+    fetchdata = render_as_tuple_custom(query)
+    # logging.info(f"fetchdata : {fetchdata}")
+    logging.info(f"fetchdata type: {type(fetchdata)}")
+    data = []
+    for row in fetchdata:
+        data_row = {
+            'ID': row[0],
+            'Nom': row[1],
+            'Prenom': row[2],
+            'Domain': row[3],
+            'Gender': row[4],
+            'Fonction': row[5],
+            'Niveau': row[6],
+            'ColonneNiveau': row[7],
+            'Annee_experience_en_conception': row[8],
+            'Prediction': row[9],
+            'ColonneExperience': row[10],
+            'Localisation': row[11],
+            'Source': row[12],
+            'Url': row[13]
+        }
+        pred_df = pd.DataFrame([data_row], columns=['ColonneNiveau', 'ColonneExperience', 'Gender', 'Domain'])
+        pred_df['Domain'] = pred_df['Domain'].replace({'Ingénieur Industriel': 'ingénieur industriel', 'ingénieu qualité': 'ingenieur qualite'})
+        pred_df['Domain'] = pred_df['Domain'].str.replace('é', 'e')
+        predict_pipeline = PredictPipeline()
+        prediction = predict_pipeline.predict(pred_df)[0]
+        data_row['Prediction'] = prediction  
+        # Update the Prediction in the database using SQLAlchemy
+        cv_instance = CV.query.filter_by(ID=row[0]).first()
+        if cv_instance:
+            cv_instance.Prediction = prediction
+            db.session.commit()  
+        else:
+            pass
+        data_row['Domain'] = data_row['Domain'].replace('ingénieur', 'Ingénieur').replace('ingénieu qualité', 'Ingénieur Qualité').replace('économie / gestion', 'Economie et Gestion').replace('technicien spécialisé', 'Technicien Spécialisé').replace('ingénieur process', 'Ingénieur Process').replace('ingénieur industriel', 'Ingénieur Industriel').replace('Ingénieur industriel', 'Ingénieur Industriel').replace('chargé de développement', 'Chargé de Développement').replace('concepteur/ dessinateur', 'Concepteur ou Dessinateur').replace('logistique', 'Logistique').replace('ingénieur mécanique', 'Ingénieur Mécanique')
+        data.append(data_row)
+
+    return data
+
 @app.route('/database', methods=['GET', 'POST'])
 @login_required
 def database():
@@ -465,7 +516,7 @@ def database():
 @login_required
 def modal():
     domain_selected_map = {
-                        '1': 'ingenieur qualite',
+                        '1': 'ingénieu qualité',
                         '2': 'economie / gestion',
                         '3': 'technicien specialise',
                         '4': 'ingenieur',
@@ -550,13 +601,15 @@ def modal():
         Localisation = add_cv_form.Localisation.data
         Source = add_cv_form.Source.data
         Url = add_cv_form.Url.data
+        Prediction=2
         new = CV(ID=ID, Nom=Nom, Prenom=Prenom, Gender=Gender, Fonction=Fonction, Domaine=Domaine,
                     Niveau=Niveau_label,ColonneNiveau=Niveau_selected, Annee_experience_en_conception=Annee_experience_en_conception,
-                      ColonneExperience=ColonneExperience, Localisation=Localisation, Source=Source, Url=Url)
+                      ColonneExperience=ColonneExperience, Localisation=Localisation, Source=Source, Url=Url,Prediction=Prediction)
         db.session.add(new)
         db.session.commit()
         flash('CV added successfully', 'success')
         logging.info(f'CV added successfully : {new}')
+        logging.info(f'ID: {new.ID} , Prenom: {new.Prenom}, Nom: {new.Nom}, Gender: {new.Gender}, Fonction: {new.Fonction}, Domaine: {new.Domaine}, Niveau: {new.Niveau}, ColonneNiveau: {new.ColonneNiveau}, Annee_experience_en_conception: {new.Annee_experience_en_conception}, ColonneExperience: {new.ColonneExperience}, Prediction: {new.Prediction}')
         return render_template('modal.html',add_cv_form=add_cv_form,last_id=last_id, ID=ID, Nom=Nom, Prenom=Prenom, 
                                Gender=Gender, Fonction=Fonction, Domaine=Domaine, Niveau=Niveau_label,
                                  Annee_experience_en_conception=Annee_experience_en_conception, Localisation=Localisation,

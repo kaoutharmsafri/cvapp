@@ -23,7 +23,7 @@ class CV(db.Model):
     Gender = db.Column(db.String(100))
     Prediction = db.Column(db.Integer)
 
-    def __init__(self, ID, Nom, Prenom, Gender, Fonction, Domaine, Niveau ,ColonneNiveau, Annee_experience_en_conception,ColonneExperience, Localisation, Source, Url):
+    def __init__(self, ID, Nom, Prenom, Gender, Fonction, Domaine, Niveau ,ColonneNiveau, Annee_experience_en_conception,ColonneExperience, Localisation, Source, Url, Prediction):
         self.ID = ID
         self.Nom = Nom
         self.Prenom = Prenom
@@ -37,6 +37,7 @@ class CV(db.Model):
         self.Localisation = Localisation
         self.Source = Source
         self.Url = Url
+        self.Prediction=Prediction
         
 def __repr__(self):
         return f"<CV(ID={self.ID}, Nom={self.Nom}, Prénom={self.Prenom}, Fonction={self.Fonction}, Niveau={self.Niveau}, ...)>"  
