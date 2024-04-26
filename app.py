@@ -63,19 +63,6 @@ def fetch_filtered_data(query):
             'Source': row[12],
             'Url': row[13]
         }
-        pred_df = pd.DataFrame([data_row], columns=['ColonneNiveau', 'ColonneExperience', 'Gender', 'Domain'])
-        pred_df['Domain'] = pred_df['Domain'].replace({'Ingénieur Industriel': 'ingénieur industriel', 'ingénieu qualité': 'ingenieur qualite'})
-        pred_df['Domain'] = pred_df['Domain'].str.replace('é', 'e')
-        predict_pipeline = PredictPipeline()
-        prediction = predict_pipeline.predict(pred_df)[0]
-        data_row['Prediction'] = prediction  
-        # Update the Prediction in the database using SQLAlchemy
-        cv_instance = CV.query.filter_by(ID=row[0]).first()
-        if cv_instance:
-            cv_instance.Prediction = prediction
-            db.session.commit()  
-        else:
-            pass
         data_row['Domain'] = data_row['Domain'].replace('ingénieur', 'Ingénieur').replace('ingénieu qualité', 'Ingénieur Qualité').replace('économie / gestion', 'Economie et Gestion').replace('technicien spécialisé', 'Technicien Spécialisé').replace('ingénieur process', 'Ingénieur Process').replace('ingénieur industriel', 'Ingénieur Industriel').replace('Ingénieur industriel', 'Ingénieur Industriel').replace('chargé de développement', 'Chargé de Développement').replace('concepteur/ dessinateur', 'Concepteur ou Dessinateur').replace('logistique', 'Logistique').replace('ingénieur mécanique', 'Ingénieur Mécanique')
         data.append(data_row)
 
@@ -620,7 +607,7 @@ def modal():
 @app.route('/candidature', methods=('GET', 'POST'))
 def candidature():
     domain_selected_map = {
-                        '1': 'ingenieur qualite',
+                        '1': 'ingénieu qualité',
                         '2': 'economie / gestion',
                         '3': 'technicien specialise',
                         '4': 'ingenieur',
@@ -706,13 +693,15 @@ def candidature():
         Localisation = add_cv_form.Localisation.data
         Source = add_cv_form.Source.data
         Url = add_cv_form.Url.data
+        Prediction=2
         new = CV(ID=ID, Nom=Nom, Prenom=Prenom, Gender=Gender, Fonction=Fonction, Domaine=Domaine,
                     Niveau=Niveau_label,ColonneNiveau=Niveau_selected, Annee_experience_en_conception=Annee_experience_en_conception,
-                      ColonneExperience=ColonneExperience, Localisation=Localisation, Source=Source, Url=Url)
+                      ColonneExperience=ColonneExperience, Localisation=Localisation, Source=Source, Url=Url,Prediction=Prediction)
         db.session.add(new)
         db.session.commit()
         flash('CV added successfully', 'success')
         logging.info(f'CV added successfully : {new}')
+        logging.info(f'ID: {new.ID} , Prenom: {new.Prenom}, Nom: {new.Nom}, Gender: {new.Gender}, Fonction: {new.Fonction}, Domaine: {new.Domaine}, Niveau: {new.Niveau}, ColonneNiveau: {new.ColonneNiveau}, Annee_experience_en_conception: {new.Annee_experience_en_conception}, ColonneExperience: {new.ColonneExperience}, Prediction: {new.Prediction}')
         return render_template('candidature.html',add_cv_form=add_cv_form,last_id=last_id, ID=ID, Nom=Nom, Prenom=Prenom, 
                                Gender=Gender, Fonction=Fonction, Domaine=Domaine, Niveau=Niveau_label,
                                  Annee_experience_en_conception=Annee_experience_en_conception, Localisation=Localisation,
