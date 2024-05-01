@@ -41,7 +41,10 @@ table,td{
 #table_data thead{ 
   background-color: #5d5d5d;
 }
-
+.table-container {
+  max-width: 100%; /* Set the maximum width for the container */
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
 /* ================== BODY ===================== */
 .content{
   margin: 5px;
