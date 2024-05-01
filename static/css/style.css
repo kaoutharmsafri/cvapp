@@ -38,6 +38,9 @@ tr:hover {background-color: #F8F2DC;}
 table,td{
   vertical-align: center;
 }
+#table_data thead{ 
+  background-color: #5d5d5d;
+}
 
 /* ================== BODY ===================== */
 .content{
@@ -130,3 +133,38 @@ hr{
 
 /* ================== CSS ===================== */
 
+.sorteddb {
+	color:white;
+}
+.sorteddb:hover {
+	color:white;
+  text-decoration: none;
+}
+.URLcolumn{
+  color:black;
+}
+.URLcolumn:hover{
+  color:#fea223;
+}
+.character-counter {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+}
+.back{
+  background-color: #dad8d8;
+  border-radius: 30pt;
+  padding-bottom: 20pt;
+}
+.error {
+	color:#ff0000;
+}
+.error:hover {
+	color:#ff0000;
+}
+.page {
+	color:#fb4c1c;
+}
+.page:hover {
+	color:#fb4c1c;
+}

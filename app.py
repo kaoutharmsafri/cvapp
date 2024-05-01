@@ -161,6 +161,9 @@ login_manager=LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+login_manager.login_message = "Veuillez vous connecter pour accéder à cette page."
+login_manager.login_message_category = "info" 
+
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
@@ -172,13 +175,13 @@ def login():
         password = request.form.get('password')
         user = Users.query.filter_by(username=username).first()
         if not user:
-            flash("Nom d'uilisateur incorrect. Veuillez réessayer à nouveau.")
+            flash("Nom d'uilisateur incorrect. Veuillez réessayer à nouveau.", 'danger')
             return redirect(url_for('login'))
         if not bcrypt.check_password_hash(user.password, password):
-            flash('Mot de passe incorrect . Veuillez réessayer à nouveau.')
+            flash('Mot de passe incorrect . Veuillez réessayer à nouveau.', 'danger')
             return redirect(url_for('login'))
         login_user(user)
-        flash('Bienvenue , ' + user.username + '!')
+        flash('Bienvenue , ' + user.username + '!', 'success')
         return redirect(url_for('database'))
 
     return render_template('login.html')
@@ -200,7 +203,7 @@ def register():
         user = Users.query.filter_by(username=username).first()
 
         if user:
-            flash('Utilisateur existant.')
+            flash('Utilisateur existant.', 'danger')
             return redirect(url_for('register'))
 
         # Hash the password before storing it in the database
@@ -212,7 +215,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        flash('Enregistrement avec succès.Vous pouvez vous connecter')
+        flash('Enregistrement avec succès.Vous pouvez vous connecter', 'success')
         return redirect(url_for('login'))
 
     return render_template('register.html')  # Replace 'success' with the name of your success route
@@ -371,7 +374,7 @@ def database():
                     logging.error(f"search_term: {search_term}")
                     logging.error(f"domain_selected: {domain_selected}")
                     logging.warning(f"No results found for search term: {search_term}")
-                    flash('No results found for your search term.', 'warning')
+                    flash('Pas de résultats pour votre recherche.', 'primary')
                     return render_template('Database.html', data=data, search=search_term, domain_selected=domain_selected,niveau=niveau,experience=experience,pagination=pagination)
                 else:
                     return render_template('Database.html', data=data, domain_selected=domain_selected,niveau=niveau,experience=experience,pagination=pagination)
@@ -515,7 +518,7 @@ def modal():
                         '10': 'ingenieur process'
                     }
     niveau_selected_map = {
-        'BAC ': '',
+        'BAC ': '0',
         'BAC + 1': '1',
         'BAC + 2': '2',
         'BAC + 3': '3',
@@ -619,7 +622,7 @@ def candidature():
                         '10': 'ingenieur process'
                     }
     niveau_selected_map = {
-        'BAC ': '',
+        'BAC ': '0',
         'BAC + 1': '1',
         'BAC + 2': '2',
         'BAC + 3': '3',
@@ -691,8 +694,8 @@ def candidature():
         Annee_experience_en_conception = experience_selected_map.get(ColonneExperience, '')
         ColonneExperience = int(ColonneExperience)
         Localisation = add_cv_form.Localisation.data
-        Source = add_cv_form.Source.data
-        Url = add_cv_form.Url.data
+        Source = "Site Web BENGY.H"
+        Url = " "
         Prediction=2
         new = CV(ID=ID, Nom=Nom, Prenom=Prenom, Gender=Gender, Fonction=Fonction, Domaine=Domaine,
                     Niveau=Niveau_label,ColonneNiveau=Niveau_selected, Annee_experience_en_conception=Annee_experience_en_conception,
@@ -727,7 +730,7 @@ def modifiercv(id):
                         '10': 'ingenieur process'
                     }
     niveau_selected_map = {
-        'BAC ': '',
+        'BAC ': '0',
         'BAC + 1': '1',
         'BAC + 2': '2',
         'BAC + 3': '3',

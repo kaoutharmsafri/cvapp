@@ -44,7 +44,7 @@ class AddCVForm(FlaskForm):
         ('M', 'Masculin'),
         ('F', 'Féminin')
     ])
-    Fonction = StringField('Fonction')
+    Fonction = StringField('Fonction', validators=[Length(max=100)])
     Domaine = SelectField('Séléctioner le Domaine :', choices=[
         ('1', 'Ingénieur Qualité'),
         ('2', 'Economie et Gestion'),

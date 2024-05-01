@@ -10,12 +10,17 @@
     Bienvenue à la page d'inscription
 </h1>
 <hr>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-    <div class="notification is-danger">
-        {{ messages[0] }}. Allez à la <a href="{{ url_for('login') }}">Page de connexion</a>.
-    </div>
-{% endif %}
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+                {% if category == 'danger' %}
+                    Allez à la <a class="error" href="{{ url_for('login') }}">Page de connexion</a>.
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endwith %}
 <div class="container d-flex justify-content-center">
 <form method="POST">
