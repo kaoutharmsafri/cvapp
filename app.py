@@ -846,7 +846,11 @@ def supprimercontactus(id):
     db.session.commit()
     return redirect(url_for('contactusdb'))
 
-
+@app.route('/profile/<int:id>', methods=('GET', 'POST'))
+@login_required
+def profile(id):
+    user = Users.query.get_or_404(id)
+    return render_template('profile.html',user=user)
 
 
 

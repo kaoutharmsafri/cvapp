@@ -25,6 +25,7 @@
     {% endif %}
     {% if current_user.is_authenticated %}
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', id=current_user.ID) }}"><span class="glyphicon glyphicon-user"></span>Profile</a></li>
       <li class="nav-item"><a class="nav-link" href="/register"><span class="glyphicon glyphicon-user"></span>S'inscrire</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span> Se déconnecter</a></li>
     
