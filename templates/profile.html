@@ -28,17 +28,41 @@
       <h3>{{ user.username }}</h3>
   
   <div class="desc"><ul class="list-group">
-    <li class="list-group-item">Username: {{ user.username }}</li>
-    <li class="list-group-item">Email: {{ user.email }}</li>
+    <li class="list-group-item">Username: <br>{{ user.username }}</li>
+    <li class="list-group-item">Email: <br>{{ user.email }}</li>
   </ul></div>
   <div class="actions">
-    <a href="{{ url_for('home') }}" class="button-a"><i class="far fa-heart"></i></a>
-    <a href="{{ url_for('home') }}" class="button-a"><i class="far fa-envelope"></i></a>
-    <a href="{{ url_for('home') }}" class="button-a"><i class="far fa-edit"></i></a>
+    <a href="#" class="button-a" onclick="confirmDelete(event)"><i class="far fa-trash-alt"></i></a>
+    <a href="{{ url_for('modifierprofile', id=current_user.ID) }}" class="button-a"><i class="far fa-edit"></i></a>
   </div>
 </div>
   </div>
 </div>
 </center>
-  {% endblock %}
+<div class="overlay" id="overlay">
+  <div class="confirmation-box" id="confirmationBox">
+    <p style="font-weight: bold;font-size: large;">Are you sure you want to delete your account?</p>
+    <center>
+    <button class="btn btn-confirm" onclick="deleteAccount()">Confirm</button>
+    <button style="font-weight: bold;" class="btn btn-secondary" onclick="hideConfirmation()">Cancel</button>
+  </center>
+</div>
+</div>
+
+<script>
+  function confirmDelete(event) {
+    event.preventDefault();
+    document.getElementById('overlay').style.display = 'block';
+  }
+
+  function hideConfirmation() {
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  function deleteAccount() {
+    window.location.href = "{{ url_for('delete_profile', id=current_user.ID) }}";
+  }
+</script>
+
+{% endblock %}
 

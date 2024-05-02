@@ -1,24 +1,19 @@
 # import pickle
 import sys
 
-from forms import ContactForm, LoginForm, ModifyCVForm, SearchForm, TestForm,AddCVForm
+from forms import ContactForm, ModifyCVForm, SearchForm,AddCVForm
 from src.exception import CustomException
 from src.logger import logging
 from flask import Flask,request,render_template, flash ,redirect, url_for
-import numpy as np
 import pandas as pd
-from sklearn.preprocessing	import  MinMaxScaler
-from src.pipeline.predict_pipeline import CustomData , PredictPipeline
+from src.pipeline.predict_pipeline import  PredictPipeline
 from flask_mysqldb import MySQL
-from flask_wtf import FlaskForm
-from wtforms import StringField , SubmitField, TextAreaField
-from wtforms.validators import DataRequired
 from datetime import datetime
 from models import ContactUs, Users, db, CV, last_CV_ID, render_as_tuple, render_as_tuple_custom
 from sqlalchemy import or_ , and_,asc, desc
 from flask_login import login_user,LoginManager,login_required,logout_user,current_user # type: ignore
-# from werkzeug.security import generate_password_hash, check_password_hash
-from flask_bcrypt import Bcrypt  # type: ignore
+from werkzeug.security import  check_password_hash
+from flask_bcrypt import Bcrypt ,check_password_hash # type: ignore
 # from flask_bcrypt import check_password_hash
 import bcrypt # type: ignore
 
@@ -129,11 +124,6 @@ def base():
     form=SearchForm()
     return dict(form=form)
 
-def get_records():
-    page = request.args.get('page', 1, type=int)
-    per_page = 10
-    return CV.query.order_by(asc(CV.ID)).paginate(page=page, per_page=per_page, error_out=False)
-
 @app.route('/')
 def index():
     return redirect(url_for('home'))
@@ -218,7 +208,7 @@ def register():
         flash('Enregistrement avec succès.Vous pouvez vous connecter', 'success')
         return redirect(url_for('login'))
 
-    return render_template('register.html')  # Replace 'success' with the name of your success route
+    return render_template('register.html')  
 
 def fetch_data_sorted_by_column(column_name, order,page, per_page):
     if column_name == 'Nom':
@@ -852,8 +842,36 @@ def profile(id):
     user = Users.query.get_or_404(id)
     return render_template('profile.html',user=user)
 
+@app.route('/modifierprofile/<int:id>', methods=('GET', 'POST'))
+@login_required
+def modifierprofile(id):
+    user = Users.query.get_or_404(id)
+    if request.method == 'POST':
+        email = request.form.get('email')
+        oldpassword = request.form.get('oldpassword')
+        newpassword = request.form.get('newpassword')
+        if not check_password_hash(user.password, oldpassword):
+            flash('Mot de passe incorrect.', 'danger')
+            return redirect(url_for('modifierprofile', id=id))
+        else:
+            hashed_newpassword = bcrypt.generate_password_hash(newpassword).decode('utf-8')
+            user.email=email
+            user.password=hashed_newpassword
+            db.session.commit()
+            flash('Modification avec succès.', 'success')
 
+        return redirect(url_for('modifierprofile', id=id))
 
+    return render_template('modifierprofile.html',user=user)  
+
+@app.route('/delete_profile/<int:id>', methods=('GET', 'POST'))
+@login_required
+def delete_profile(id):
+    user = Users.query.get_or_404(id)
+    # db.session.delete(user)
+    # db.session.commit()
+    # return redirect( url_for('profile', id=current_user.ID) )
+    return redirect( url_for('home'))
 
 
 if __name__ == '__main__':
