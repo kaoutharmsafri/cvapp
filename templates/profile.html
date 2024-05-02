@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+
 <center>
 <div class="card profile-card">
   <div class="img-avatar">
@@ -24,7 +25,7 @@
 
     </div>
     <div class="title-total">   
-      <div class="title"><h2>Votre Profile</h2></div>
+      <div class="title"><h2>&nbsp;&nbsp;Votre Profile </h2></div>
       <h3>{{ user.username }}</h3>
   
   <div class="desc"><ul class="list-group">
@@ -40,28 +41,35 @@
 </div>
 </center>
 <div class="overlay" id="overlay">
-  <div class="confirmation-box" id="confirmationBox">
-    <p style="font-weight: bold;font-size: large;">Are you sure you want to delete your account?</p>
-    <center>
-    <button class="btn btn-confirm" onclick="deleteAccount()">Confirm</button>
-    <button style="font-weight: bold;" class="btn btn-secondary" onclick="hideConfirmation()">Cancel</button>
-  </center>
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content confirmation-box">
+      <div class="modal-header">
+        <h5 class="modal-title" style="font-weight: bold;">Confirmation de suppression</h5>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer votre compte ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" style="font-weight: bold;" class="btn btn-secondary" onclick="hideConfirmation()">Annuler</button>
+        <button type="button" class="btn btn btn-confirm" onclick="deleteAccount()">Confirmer</button>
+      </div>
+    </div>
 </div>
 </div>
 
 <script>
-  function confirmDelete(event) {
-    event.preventDefault();
-    document.getElementById('overlay').style.display = 'block';
-  }
+function confirmDelete(event) {
+  event.preventDefault();
+  document.getElementById('overlay').style.display = 'block';
+}
 
-  function hideConfirmation() {
-    document.getElementById('overlay').style.display = 'none';
-  }
+function hideConfirmation() {
+  document.getElementById('overlay').style.display = 'none';
+}
 
-  function deleteAccount() {
-    window.location.href = "{{ url_for('delete_profile', id=current_user.ID) }}";
-  }
+function deleteAccount() {
+  window.location.href = "{{ url_for('delete_profile', id=current_user.ID) }}";
+}
 </script>
 
 {% endblock %}

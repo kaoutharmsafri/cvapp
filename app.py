@@ -868,9 +868,8 @@ def modifierprofile(id):
 @login_required
 def delete_profile(id):
     user = Users.query.get_or_404(id)
-    # db.session.delete(user)
-    # db.session.commit()
-    # return redirect( url_for('profile', id=current_user.ID) )
+    db.session.delete(user)
+    db.session.commit()
     return redirect( url_for('home'))
 
 

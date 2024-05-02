@@ -150,9 +150,27 @@
           </a>
       </td>
       <td>
-          <a href="{{ url_for('supprimercv', id=row['ID']) }}" class="btn btn-outline-warning iconbtn">
-              <i class="fas fa-trash" style="color: black;"></i>
-          </a>
+          <button type="button" class="btn btn-outline-warning iconbtn" data-toggle="modal" data-target="#deleteModal{{ row['ID'] }}">
+            <i class="fas fa-trash" style="color: black;"></i> 
+          </button>
+          <div class="modal fade" id="deleteModal{{ row['ID'] }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ row['ID'] }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content " style="border-radius: 20px;">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteModalLabel{{ row['ID'] }}">Confirmation de suppression</h5>
+                </div>
+                <div class="modal-body">
+                  <p>Voulez-vous vraiment supprimer cet élément?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" style="font-weight: bold;" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                  <form action="{{ url_for('supprimercv', id=row['ID']) }}" method="post">
+                    <button type="submit" class="btn btn-confirm">Confirmer</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
       </td>
       </tr>
 
