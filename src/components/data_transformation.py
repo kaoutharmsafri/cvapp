@@ -39,7 +39,6 @@ class DataTransformation:
             cat_pipeline=Pipeline(
                 steps=[
                 ("label_encoder",LabelEncoder()),
-                # ("scaler",StandardScaler(with_mean=False))
                 ]
             )
             logging.info(f"Categorical columns encoding completed")

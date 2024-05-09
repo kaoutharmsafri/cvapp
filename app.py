@@ -1,6 +1,4 @@
-# import pickle
 import sys
-
 from forms import ContactForm, ModifyCVForm, SearchForm,AddCVForm
 from src.exception import CustomException
 from src.logger import logging
@@ -8,37 +6,22 @@ from flask import Flask,request,render_template, flash ,redirect, url_for
 import pandas as pd
 from src.pipeline.predict_pipeline import  PredictPipeline
 from flask_mysqldb import MySQL
-from datetime import datetime
 from models import ContactUs, Users, db, CV, last_CV_ID, render_as_tuple, render_as_tuple_custom
 from sqlalchemy import or_ , and_,asc, desc
-from flask_login import login_user,LoginManager,login_required,logout_user,current_user # type: ignore
+from flask_login import login_user,LoginManager,login_required,logout_user # type: ignore
 from werkzeug.security import  check_password_hash
 from flask_bcrypt import Bcrypt ,check_password_hash # type: ignore
-# from flask_bcrypt import check_password_hash
 import bcrypt # type: ignore
-
 
 application = Flask(__name__)
 app = application
-
-app.config['SECRET_KEY'] = 'your_secret_key_here'
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'db_cv1'
-mysql = MySQL(app)
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/db_cv1'  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://cookie:Kaouthar2001@cookie.database.windows.net/db_cv1?driver=ODBC+Driver+17+for+SQL+Server'
-
 db.init_app(app)
 
 bcrypt = Bcrypt(app) 
 
-
 def fetch_filtered_data(query):
     fetchdata = render_as_tuple_custom(query)
-    # logging.info(f"fetchdata : {fetchdata}")
     logging.info(f"fetchdata type: {type(fetchdata)}")
     data = []
     for row in fetchdata:
@@ -89,7 +72,7 @@ def fetch_all_data():
         predict_pipeline = PredictPipeline()
         prediction = predict_pipeline.predict(pred_df)[0]
         data_row['Prediction'] = prediction  
-        # Update the Prediction in the database using SQLAlchemy
+        # Update the Prediction column
         cv_instance = CV.query.filter_by(ID=row[0]).first()
         if cv_instance:
             cv_instance.Prediction = prediction
@@ -191,17 +174,13 @@ def register():
         password = request.form.get('password')
 
         user = Users.query.filter_by(username=username).first()
-
         if user:
             flash('Utilisateur existant.', 'danger')
             return redirect(url_for('register'))
 
-        # Hash the password before storing it in the database
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-
         new_user = Users(email=email, username=username, password=hashed_password)
 
-        # Add the new user to the database
         db.session.add(new_user)
         db.session.commit()
 
@@ -218,10 +197,8 @@ def fetch_data_sorted_by_column(column_name, order,page, per_page):
     elif column_name == 'ColonneExperience':
         query = CV.query.order_by(order(CV.ColonneExperience)).paginate(page=page, per_page=per_page, error_out=False)
     else:
-        # return CV.query.order_by(order(CV.ID)).paginate(page=page, per_page=per_page, error_out=False)
         query = CV.query.order_by(order(CV.ID)).paginate(page=page, per_page=per_page, error_out=False)
     fetchdata = render_as_tuple_custom(query)
-    # logging.info(f"fetchdata : {fetchdata}")
     logging.info(f"fetchdata type: {type(fetchdata)}")
     data = []
     for row in fetchdata:
@@ -247,7 +224,7 @@ def fetch_data_sorted_by_column(column_name, order,page, per_page):
         predict_pipeline = PredictPipeline()
         prediction = predict_pipeline.predict(pred_df)[0]
         data_row['Prediction'] = prediction  
-        # Update the Prediction in the database using SQLAlchemy
+
         cv_instance = CV.query.filter_by(ID=row[0]).first()
         if cv_instance:
             cv_instance.Prediction = prediction
@@ -457,7 +434,6 @@ def database():
             per_page = 10
             pagination = CV.query.order_by(CV.ID).paginate(page=page, per_page=per_page, error_out=False)
             data = pagination.items
-            # data=fetch_all_data()
             sort_by = request.args.get('sort_by', 'ID')
             sort_order = request.args.get('sort_order', 'desc')
             if sort_by == 'Nom':
@@ -808,7 +784,6 @@ def modifiercv(id):
 
         logging.info(f"cv:{cv.Nom , cv.Prenom , cv.Gender , cv.Fonction,cv.Domaine,cv.Niveau,cv.ColonneNiveau,cv.Annee_experience_en_conception,cv.ColonneExperience,cv.Localisation,cv.Source,cv.Url}")
         logging.info(f"les informations ont ete modifiees avec succes. ")
-        # return render_template("Database.html")
     return render_template('modifiercv.html',id=id ,cv=cv,mod_cv_form=mod_cv_form)
 
 

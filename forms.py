@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, IntegerRangeField, SelectField, SelectField, StringField , SubmitField ,PasswordField, TextAreaField
-from wtforms.validators import DataRequired,NumberRange,InputRequired,Length,ValidationError, Email
+from wtforms.validators import NumberRange,InputRequired,Length, Email
 
 
 class SearchForm(FlaskForm):
@@ -113,19 +113,6 @@ class AddCVForm(FlaskForm):
         ('29', '29 ans'),
         ('30', '30 ans'),
     ])
-    # MoisExperience = SelectField('Mois d\'expérience', choices=[
-    #     ('1', '1 mois'),
-    #     ('2', '2 mois'),
-    #     ('3', '3 mois'),
-    #     ('4', '4 mois'),
-    #     ('5', '5 mois'),
-    #     ('6', '6 mois'),
-    #     ('7', '7 mois'),
-    #     ('8', '8 mois'),
-    #     ('9', '9 mois'),
-    #     ('10', '10 mois'),
-    #     ('11', '11 mois'),
-    # ])
     Localisation = StringField('Localisation')
     Source = StringField('Source')
     Url = StringField('URL')
@@ -208,19 +195,6 @@ class ModifyCVForm(FlaskForm):
         ('29', '29 ans'),
         ('30', '30 ans'),
     ])
-    # MoisExperience = SelectField('Mois d\'expérience', choices=[
-    #     ('1', '1 mois'),
-    #     ('2', '2 mois'),
-    #     ('3', '3 mois'),
-    #     ('4', '4 mois'),
-    #     ('5', '5 mois'),
-    #     ('6', '6 mois'),
-    #     ('7', '7 mois'),
-    #     ('8', '8 mois'),
-    #     ('9', '9 mois'),
-    #     ('10', '10 mois'),
-    #     ('11', '11 mois'),
-    # ])
     Localisation = StringField('Localisation')
     Source = StringField('Source')
     Url = StringField('URL')
@@ -232,24 +206,3 @@ class ContactForm(FlaskForm):
     subject = StringField('Sujet')
     message = TextAreaField('Message')
     contactformsubmit = SubmitField('Envoyer')
-# ('0', 'BAC '), 
-# ('1', 'BAC + 1'),
-# ('2', 'BAC + 2'),
-# ('3', 'BAC + 3'),
-# ('4', 'BAC + 4'),
-# ('5', 'BAC + 5'),
-# ('6', 'BAC + 6'),
-# ('7', 'BAC + 7'),
-# ('8', 'BAC + 8'),
-# ('9', 'BAC + 9'),
-# ('10', 'BAC + 10'),
-# ('11', 'BAC + 11'),
-# ('12', 'BAC + 12'),
-# ('13', 'BAC + 13'),
-# ('14', 'BAC + 14'),
-# ('15', 'BAC + 15'),
-# ('16', 'BAC + 16'),
-# ('17', 'BAC + 17'),
-# ('18', 'BAC + 18'),
-# ('19', 'BAC + 19'),
-# ('20', 'BAC + 20'),
