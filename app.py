@@ -15,7 +15,7 @@ import bcrypt # type: ignore
 
 application = Flask(__name__)
 app = application
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://cookie:Kaouthar2001@cookie.database.windows.net/db_cv1?driver=ODBC+Driver+17+for+SQL+Server'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://kaouthar:Bengy12345@cvappserveur.database.windows.net/db_cv1?driver=ODBC+Driver+17+for+SQL+Server'
 db.init_app(app)
 
 bcrypt = Bcrypt(app) 
