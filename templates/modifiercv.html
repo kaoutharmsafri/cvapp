@@ -9,30 +9,41 @@
 
 {% block content %}
 
-  <h1>Page de Modification</h1><a href="{{ url_for('database') }}" class="btn custom-btn"><i class="fas fa-window-close"></i></a>
-  <h2>Modifier ID : {{ id }}</h2>
-  <p><strong>ID:</strong> {{ cv.ID }}</p>
-  <p><strong>Nom:</strong> {{ cv.Nom }}</p>
-  <p><strong>Prénom:</strong> {{ cv.Prenom }}</p>
-  <p><strong>Genre :</strong> {{ cv.Gender }}</p>
-  <p><strong>Fonction:</strong> {{ cv.Fonction }}</p>
-  <p><strong>Domaine:</strong> {{ cv.Domaine }}</p>
-  <p><strong>Niveau:</strong> {{ cv.Niveau }}</p>
-  <p><strong>ColonneNiveau:</strong> {{ cv.ColonneNiveau }}</p>
-  <p><strong>Annee_experience_en_conception:</strong> {{ cv.Annee_experience_en_conception }}</p>
-  <p><strong>Prediction:</strong> {{ cv.Prediction }}</p>
-  <p><strong>ColonneExperience:</strong> {{ cv.ColonneExperience }}</p>
-  <p><strong>Localisation:</strong> {{ cv.Localisation }}</p>
-  <p><strong>Source:</strong> {{ cv.Source }}</p>
-  <p><strong>Url:</strong> {{ cv.Url }}</p>
-<hr>
+  <h1>Page de Modification</h1><hr>
+  <a href="{{ url_for('database') }}" class="btn custom-btn"><i class="fas fa-window-close"></i></a>
+  
+  <div class="container  back">
+    <div class="row">
+      <div class="col ">
+        <br>
+        <h2>Modifier ID : {{ id }}</h2>
+        <p><strong>Nom:</strong> {{ cv.Nom }}</p>
+        <p><strong>Prénom:</strong> {{ cv.Prenom }}</p>
+        <p><strong>Genre :</strong> {{ cv.Gender }}</p>
+        <p><strong>Fonction:</strong> {{ cv.Fonction }}</p>
+        <p><strong>Domaine:</strong> {{ cv.Domaine }}</p>
+        <p><strong>Niveau:</strong> {{ cv.Niveau }}</p>
+        <p><strong>ColonneNiveau:</strong> {{ cv.ColonneNiveau }}</p>
+        <p><strong>Annee_experience_en_conception:</strong> {{ cv.Annee_experience_en_conception }}</p>
+        <p><strong>Prediction:</strong> {{ cv.Prediction }}</p>
+        <p><strong>ColonneExperience:</strong> {{ cv.ColonneExperience }}</p>
+        <p><strong>Localisation:</strong> {{ cv.Localisation }}</p>
+        <p><strong>Source:</strong> {{ cv.Source }}</p>
+        <p><strong>Url:</strong> {{ cv.Url }}</p>
+</div>
+      
+<div class="vertical-rule"></div>
+
+<div class="col">
   <form method="POST" id="AddCVForm" name="AddCVForm" class="mt-4">
     {{ mod_cv_form.csrf_token }}
     {{ mod_cv_form.hidden_tag() }}
-    <div  class="form-group">
-        <label class="form-control-label" for="ID">ID :</label>
-        {{ mod_cv_form.ID(class="form-control form-control-login-register", placeholder=" ", required="required", value=cv.ID) }}
-    </div>
+    <fieldset disabled>
+      <div  class="form-group">
+          <label class="form-control-label" for="ID">ID :</label>
+          {{ mod_cv_form.ID(class="form-control form-control-login-register", placeholder=" ", required="required", value=cv.ID) }}
+      </div>
+    </fieldset>
     <div  class="form-group">
         <label class="form-control-label" for="Nom">Nom :</label>
         {{ mod_cv_form.Nom(class="form-control form-control-login-register", placeholder=" ", required="required", value=cv.Nom) }}
@@ -152,7 +163,9 @@
 
 
 
-
+</div>
+</div>
+</div>
 
 
   {% endblock %}

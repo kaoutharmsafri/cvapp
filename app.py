@@ -557,6 +557,8 @@ def modal():
         ColonneExperience = int(ColonneExperience)
         Localisation = add_cv_form.Localisation.data
         Source = add_cv_form.Source.data
+        if not Source:
+            Source = "Site Web BENGY.H"
         Url = add_cv_form.Url.data
         Prediction=2
         new = CV(ID=ID, Nom=Nom, Prenom=Prenom, Gender=Gender, Fonction=Fonction, Domaine=Domaine,
@@ -662,7 +664,9 @@ def candidature():
         ColonneExperience = int(ColonneExperience)
         Localisation = add_cv_form.Localisation.data
         Source = "Site Web BENGY.H"
-        Url = " "
+        Url = add_cv_form.Url.data
+        if not Url: 
+            Url = " "
         Prediction=2
         new = CV(ID=ID, Nom=Nom, Prenom=Prenom, Gender=Gender, Fonction=Fonction, Domaine=Domaine,
                     Niveau=Niveau_label,ColonneNiveau=Niveau_selected, Annee_experience_en_conception=Annee_experience_en_conception,

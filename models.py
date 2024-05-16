@@ -18,7 +18,7 @@ class CV(db.Model):
     ColonneExperience = db.Column(db.Integer)
     Localisation = db.Column(db.String(100))
     Source = db.Column(db.String(100))
-    Url = db.Column(db.String(100))
+    Url = db.Column(db.String(300))
     Gender = db.Column(db.String(100))
     Prediction = db.Column(db.Integer)
 
