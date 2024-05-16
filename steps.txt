@@ -1,4 +1,8 @@
-cd  C:\Users\PC\Desktop\master\S9\7-PFE\7-WebApp\Entireprojectdev\CV_project3
+cd  C:\Users\PC\Desktop\master\S9\7-PFE\7-WebApp\Entireprojectdev\cvproject4\cvappdb2
+
+=============================================================
+=================== virtual environnement ===================
+=============================================================
 
 pip install virtualenv
 
@@ -14,6 +18,9 @@ conda activate venv/
 
 pip install -r requirements.txt
 
+=============================================================
+============================ Git ============================
+=============================================================
 git remote -v
 
 git remote add origin https://github.com/kaoutharmsafri/cvproject3.git
@@ -26,4 +33,31 @@ git remote set-url origin <new-remote-url>
 
 git checkout -b  main
 
+==========================
+
+git add .
+
+git commit -m "Actions azure container 1"
+
+git push -u origin main
+
+git push -u origin main --force
+
+=============================================================
+============================ Docker ============================
+=============================================================
+
+docker login -u kaoutharr -p Kaouthar2001 index.docker.io              
+
+docker login cvappcontainer.azurecr.io
+
+cvappcontainer
+
+7OcWE9E/mYOb2OpavofegP+nTwHXpEF3bx+6Bunc07+ACRB3Aapg 
+
+docker build -t cvappcontainer.azurecr.io/cvapp:latest . 
+
+docker push cvappcontainer.azurecr.io/cvapp:latest
+
 docker run -p 5000:5000 cvappdb     
+
