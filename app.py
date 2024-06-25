@@ -16,7 +16,7 @@ import bcrypt # type: ignore
 application = Flask(__name__)
 app = application
 app.config['SECRET_KEY'] = 'your_secret_key_here'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://serverkaouthar:Kaouthar2001@serverkaouthar.database.windows.net/serverkaouthar?driver=ODBC+Driver+17+for+SQL+Server'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://serverkaouthar:Kaouthar2001@cvappserveur.database.windows.net/serverkaouthar?driver=ODBC+Driver+17+for+SQL+Server'
 db.init_app(app)
 
 bcrypt = Bcrypt(app) 
